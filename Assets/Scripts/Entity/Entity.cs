@@ -7,15 +7,15 @@ public class Entity : MonoBehaviour
     [SerializeField] private string displayName;
     [SerializeField] private FactionDefinition faction;
     [SerializeField] private InteractionDefinition[] interactions;
-    [SerializeField] private float updateInterval = 1;
-    
-    public string DisplayName => displayName; 
+    [SerializeField] private float updateInterval = 1f;
+
+    public string DisplayName => displayName;
     public FactionDefinition Faction => faction;
     public IReadOnlyList<InteractionDefinition> Interactions => interactions;
 
     private InteractionController controller;
-    private float elapsedTime = 0;
-    
+    private float elapsedTime;
+
     private void Awake()
     {
         controller = new InteractionController(this);

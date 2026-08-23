@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public enum InteractionKind
@@ -40,13 +41,21 @@ public struct FactionPair
 [CreateAssetMenu(fileName = "InteractionDefinition", menuName = "Scriptable Objects/InteractionDefinition")]
 public class InteractionDefinition : ScriptableObject
 {
-    [SerializeField] public string identifier;
-    [SerializeField] public string description;
-    [SerializeField] public InteractionKind kind;
+    [SerializeField] private string identifier;
+    [SerializeField] private string description;
+    [SerializeField] private InteractionKind kind;
 
-    [SerializeField] public float duration;
-    [SerializeField] public int priority;
+    [SerializeField] private float duration;
+    [SerializeField] private int priority;
 
-    [SerializeField] public FactionPair[] allowedFactionPairs;
-    [SerializeField] public Effect effect;
+    [SerializeField] private FactionPair[] allowedFactionPairs;
+    [SerializeField] private Effect effect;
+
+    public string Identifier => identifier;
+    public string Description => description;
+    public InteractionKind Kind => kind;
+    public float Duration => duration;
+    public int Priority => priority;
+    public IReadOnlyList<FactionPair> AllowedFactionPairs => allowedFactionPairs;
+    public Effect Effect => effect;
 }

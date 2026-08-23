@@ -1,10 +1,8 @@
 using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
 
 public class InteractionController
 {
-    private Entity owner;
+    private readonly Entity owner;
     private InteractionInstance currentInteraction;
     
     public InteractionController(Entity owner)
@@ -27,45 +25,52 @@ public class InteractionController
     public void EvaluateInteractions()
     {
         IReadOnlyList<Entity> entities = EntityRegistry.Entities;
-        List<InteractionTarget> targets = new List<InteractionTarget>();
+        List<InteractionCandidate> candidates = new List<InteractionCandidate>();
         foreach (Entity entity in entities)
         {
-            if (entity == owner) continue;
-
-            FactionPair factionPair = new FactionPair(owner.Faction, entity.Faction);
-            foreach (InteractionDefinition interactionDefinition in owner.Interactions)
+            if (entity == owner)
             {
-                if (interactionDefinition.allowedFactionPairs.Contains(factionPair))
+                continue;
+            }
+
+            foreach (InteractionDefinition interaction in owner.Interactions)
+            {
+                if (InteractionAvailability.IsInteractionAvailable(interaction,
+                        owner.Interactions, owner.Faction, entity.Faction))
                 {
-                    targets.Add(new InteractionTarget(interactionDefinition, entity));
+                    candidates.Add(new InteractionCandidate(interaction, entity));
                 }
             }
         }
 
-        InteractionTarget target = InteractionSelector.SelectInteractionTarget(targets);
-        if (target == null) return;
-        
-        TryToStartInteraction(target);
+        InteractionCandidate candidate = InteractionSelector.SelectInteractionCandidate(candidates);
+        if (candidate == null)
+        {
+            return;
+        }
+
+        TryToStartInteraction(candidate);
     }
 
-    void TryToStartInteraction(InteractionTarget interactionTarget)
+    private void TryToStartInteraction(InteractionCandidate interactionCandidate)
     {
         if (currentInteraction != null)
         {
-            // Early return if current interaction has higher prority
-            if (interactionTarget.Priority <= currentInteraction.Definition.priority)
+            // Keep the current interaction unless the candidate has a strictly higher priority.
+            if (!InteractionPriorityPolicy.CanInterruptInteraction(currentInteraction.Priority,
+                    interactionCandidate.Priority))
             {
                 return;
             }
-            
+
             CancelInteraction();
         }
-        
-        currentInteraction = new InteractionInstance(interactionTarget.interactionDefinition, 
-            new InteractionContext(owner, interactionTarget.target));
-        
+
+        currentInteraction = new InteractionInstance(interactionCandidate.Interaction,
+            new InteractionContext(owner, interactionCandidate.Target));
+
         currentInteraction.Start();
-        if (currentInteraction.Definition.kind == InteractionKind.Immediate)
+        if (currentInteraction.Definition.Kind == InteractionKind.Immediate)
         {
             CompleteInteraction();
         }

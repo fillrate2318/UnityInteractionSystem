@@ -1,14 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 public static class InteractionSelector
 {
-    public static InteractionTarget SelectInteractionTarget(IReadOnlyList<InteractionTarget> targets)
+    public static InteractionCandidate SelectInteractionCandidate(
+        IReadOnlyList<InteractionCandidate> candidates)
     {
-        return targets.OrderByDescending(t => t.interactionDefinition.priority).
-            ThenBy(t => t.interactionDefinition.identifier, StringComparer.Ordinal).
-            ThenBy(t => t.target.DisplayName, StringComparer.Ordinal).FirstOrDefault();
+        return candidates
+            .OrderByDescending(candidate => candidate.Priority)
+            .ThenBy(candidate => candidate.Interaction.Identifier, StringComparer.Ordinal)
+            .ThenBy(candidate => candidate.Target.DisplayName, StringComparer.Ordinal)
+            .FirstOrDefault();
     }
 }

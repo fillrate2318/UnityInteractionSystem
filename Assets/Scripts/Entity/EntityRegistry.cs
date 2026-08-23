@@ -1,11 +1,10 @@
 using System.Collections.Generic;
-using UnityEngine;
 
 public static class EntityRegistry
 {
     public static IReadOnlyList<Entity> Entities => entities;
     
-    private static List<Entity> entities = new List<Entity>();
+    private static readonly List<Entity> entities = new List<Entity>();
 
     public static void RegisterEntity(Entity entity)
     {

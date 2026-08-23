@@ -3,17 +3,17 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Effect", menuName = "Scriptable Objects/Effect")]
 public abstract class Effect : ScriptableObject
 {
-    // Virtual methods are not abstract because not each child class need to implement all methods
-    
-    // Executes when effect is applied, before first update call
-    public virtual void OnStart(InteractionContext context) {}
-    
-    // Executes each frame
-    public virtual void OnTick(InteractionContext context) {}
-    
-    // Executes after effect is finished normally
-    public virtual void OnComplete(InteractionContext context) {}
-    
-    // Executes if effect was canceled by effect with higher priority
-    public virtual void OnCancel(InteractionContext context) {}
+    // These methods are virtual because derived effects do not need to implement every lifecycle hook.
+
+    // Executes when the effect is applied, before the first tick.
+    public virtual void OnStart(InteractionContext context) { }
+
+    // Executes once per frame while the effect is active.
+    public virtual void OnTick(InteractionContext context, float deltaTime) { }
+
+    // Executes after the effect finishes normally.
+    public virtual void OnComplete(InteractionContext context) { }
+
+    // Executes when an interaction with a higher-priority effect interrupts this effect.
+    public virtual void OnCancel(InteractionContext context) { }
 }

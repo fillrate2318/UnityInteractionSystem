@@ -1,40 +1,39 @@
-using Unity.VisualScripting;
-using UnityEngine;
-
 public class InteractionInstance
 {
-    private InteractionDefinition definition;
-    private InteractionContext context;
+    private readonly InteractionDefinition definition;
+    private readonly InteractionContext context;
 
-    private float elapsedTime = 0;
+    private float elapsedTime;
 
     public InteractionDefinition Definition => definition;
-    public bool IsComplete => elapsedTime >= definition.duration;
-    
+    public int Priority => definition.Priority;
+
+    public bool IsComplete => elapsedTime >= definition.Duration;
+
     public InteractionInstance(InteractionDefinition definition, InteractionContext context)
     {
         this.definition = definition;
         this.context = context;
     }
-    
+
     public void Start()
     {
-        definition.effect.OnStart(context);
+        definition.Effect.OnStart(context);
     }
 
     public void Tick(float deltaTime)
     {
         elapsedTime += deltaTime;
-        definition.effect.OnTick(context);
+        definition.Effect.OnTick(context, deltaTime);
     }
 
     public void Complete()
     {
-        definition.effect.OnComplete(context);
+        definition.Effect.OnComplete(context);
     }
     
     public void Cancel()
     {
-        definition.effect.OnCancel(context);
+        definition.Effect.OnCancel(context);
     }
 }
