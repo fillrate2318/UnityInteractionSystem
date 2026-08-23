@@ -9,6 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3df8356c224e84d47a3b1d21f4c24d8b, type: 3}
-  m_Name: EmitLogEffect
-  m_EditorClassIdentifier: Assembly-CSharp::EmitLogEffect
+  m_Script: {fileID: 11500000, guid: 26ed7560bb7371f46b8ab603dfc59292, type: 3}
+  m_Name: RestoreHealth
+  m_EditorClassIdentifier: Assembly-CSharp::RestoreHealthEffect
+  debugColor: {r: 0, g: 0, b: 0, a: 0}
+  healthAmount: 20

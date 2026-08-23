@@ -3,12 +3,19 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "EmitLogEffect", menuName = "Scriptable Objects/EmitLogEffect")]
 public class EmitLogEffect : Effect
 {
+    [SerializeField] private string message = "{initiator} interacted with {target}";
+    
     public override void OnStart(InteractionContext context)
     {
-        if (context.initiator && context.target)
+        if (string.IsNullOrWhiteSpace(message) || !context.Initiator || !context.Target)
         {
-            context.DrawDebug(Color.crimson, 0.2f);
-            Debug.Log($"Emit log effect applied by {context.initiator} on {context.target}");
+            return;
         }
+        
+        if (!context.Initiator || !context.Target) return;
+        string formattedMessage = message.Replace("{initiator}", context.Initiator.DisplayName)
+            .Replace("{target}", context.Target.DisplayName);
+
+        Debug.Log(formattedMessage, context.Initiator);
     }
 }

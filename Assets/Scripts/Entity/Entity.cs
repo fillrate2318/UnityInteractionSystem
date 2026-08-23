@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,6 +14,29 @@ public class Entity : MonoBehaviour
 
     private InteractionController controller;
     private float elapsedTime;
+
+    private void OnValidate()
+    {
+        if (string.IsNullOrWhiteSpace(displayName))
+        {
+            Debug.LogWarning("Entity has no display name.", this);
+        }
+
+        if (faction == null)
+        {
+            Debug.LogWarning("Entity has no faction.", this);
+        }
+
+        if (interactions == null)
+        {
+            Debug.LogWarning("Entity interactions are not initialized.", this);
+        }
+        
+        if (updateInterval <= 0)
+        {
+            Debug.LogWarning("Entity update interval must be greater than 0.", this);
+        }
+    }
 
     private void Awake()
     {

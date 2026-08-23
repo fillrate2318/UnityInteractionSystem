@@ -8,7 +8,10 @@ public static class EntityRegistry
 
     public static void RegisterEntity(Entity entity)
     {
-        entities.Add(entity);
+        if (!entities.Contains(entity))
+        {
+            entities.Add(entity);
+        }
     }
 
     public static void UnregisterEntity(Entity entity)

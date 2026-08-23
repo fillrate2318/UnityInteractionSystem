@@ -1,19 +1,11 @@
-using System.Collections.Generic;
 using System.Linq;
 
 public static class InteractionAvailability
 {
-    public static bool IsInteractionAvailable(InteractionDefinition interaction,
-        IReadOnlyList<InteractionDefinition> availableInteractions,
+    public static bool IsFactionPairAllowed(InteractionDefinition interaction,
         FactionDefinition initiatorFaction, FactionDefinition targetFaction)
     {
-        if (interaction == null || availableInteractions == null ||
-            initiatorFaction == null || targetFaction == null)
-        {
-            return false;
-        }
-
-        if (!availableInteractions.Contains(interaction))
+        if (interaction == null || initiatorFaction == null || targetFaction == null)
         {
             return false;
         }

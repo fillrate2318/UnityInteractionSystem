@@ -58,4 +58,27 @@ public class InteractionDefinition : ScriptableObject
     public int Priority => priority;
     public IReadOnlyList<FactionPair> AllowedFactionPairs => allowedFactionPairs;
     public Effect Effect => effect;
+
+    private void OnValidate()
+    {
+        if (kind == InteractionKind.Timed && duration <= 0)
+        {
+            Debug.LogWarning("Interaction definition contains a duration less than or equal to zero.", this);
+        }
+
+        if (effect == null)
+        {
+            Debug.LogWarning("Interaction definition contains no effect.", this);
+        }
+
+        if (string.IsNullOrWhiteSpace(identifier))
+        {
+            Debug.LogWarning("Interaction definition contains no identifier.", this);
+        }
+
+        if (allowedFactionPairs == null || allowedFactionPairs.Length == 0)
+        {
+            Debug.LogWarning("Interaction definition contains no allowed faction pairs.", this);
+        }
+    }
 }

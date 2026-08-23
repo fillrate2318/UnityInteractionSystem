@@ -8,4 +8,12 @@ public class FactionDefinition : ScriptableObject
 
     public string Identifier => identifier;
     public string Description => description;
+
+    private void OnValidate()
+    {
+        if (string.IsNullOrWhiteSpace(identifier))
+        {
+            Debug.LogWarning("[FactionDefinition] Identifier is null or empty.", this);
+        }
+    }
 }

@@ -35,8 +35,8 @@ public class InteractionController
 
             foreach (InteractionDefinition interaction in owner.Interactions)
             {
-                if (InteractionAvailability.IsInteractionAvailable(interaction,
-                        owner.Interactions, owner.Faction, entity.Faction))
+                if (InteractionAvailability.IsFactionPairAllowed(interaction, 
+                        owner.Faction, entity.Faction))
                 {
                     candidates.Add(new InteractionCandidate(interaction, entity));
                 }
@@ -66,8 +66,8 @@ public class InteractionController
             CancelInteraction();
         }
 
-        currentInteraction = new InteractionInstance(interactionCandidate.Interaction,
-            new InteractionContext(owner, interactionCandidate.Target));
+        currentInteraction = new InteractionInstance(new InteractionContext(owner, 
+            interactionCandidate.Target, interactionCandidate.Interaction));
 
         currentInteraction.Start();
         if (currentInteraction.Definition.Kind == InteractionKind.Immediate)

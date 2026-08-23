@@ -1,22 +1,13 @@
-using UnityEngine;
-
-public struct InteractionContext
+public readonly struct InteractionContext
 {
-    public Entity initiator;
-    public Entity target;
+    public Entity Initiator { get; }
+    public Entity Target { get; }
+    public InteractionDefinition Interaction { get; }
 
-    public InteractionContext(Entity initiator, Entity target)
+    public InteractionContext(Entity initiator, Entity target, InteractionDefinition interaction)
     {
-        this.initiator = initiator;
-        this.target = target;
-    }
-
-    public void DrawDebug(Color color, float duration)
-    {
-        if (initiator && target)
-        {
-            Debug.DrawLine(initiator.transform.position, target.transform.position, 
-                color, duration);
-        }
+        Initiator = initiator;
+        Target = target;
+        Interaction = interaction;
     }
 }

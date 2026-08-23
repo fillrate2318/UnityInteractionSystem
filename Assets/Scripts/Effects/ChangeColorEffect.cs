@@ -7,14 +7,16 @@ public class ChangeColorEffect : Effect
     
     public override void OnStart(InteractionContext context)
     {
-        if (context.target && context.initiator)
-        {
-            context.DrawDebug(Color.cadetBlue, 0.2f);
-            EntityVisual visual = context.target.GetComponent<EntityVisual>();
-            if (visual)
-            {
-                visual.SetColor(color);
-            }
-        }
+        EntityVisual visual = GetVisual(context);
+        if (!visual) return;
+        
+        visual.SetColor(color);
+    }
+
+    private EntityVisual GetVisual(InteractionContext context)
+    {
+        if (!context.Target) return null;
+        
+        return context.Target.GetComponent<EntityVisual>();
     }
 }

@@ -1,39 +1,37 @@
 public class InteractionInstance
 {
-    private readonly InteractionDefinition definition;
     private readonly InteractionContext context;
 
     private float elapsedTime;
 
-    public InteractionDefinition Definition => definition;
-    public int Priority => definition.Priority;
+    public InteractionDefinition Definition => context.Interaction;
+    public int Priority => Definition.Priority;
 
-    public bool IsComplete => elapsedTime >= definition.Duration;
+    public bool IsComplete => elapsedTime >= Definition.Duration;
 
-    public InteractionInstance(InteractionDefinition definition, InteractionContext context)
+    public InteractionInstance(InteractionContext context)
     {
-        this.definition = definition;
         this.context = context;
     }
 
     public void Start()
     {
-        definition.Effect.OnStart(context);
+        Definition.Effect.OnStart(context);
     }
 
     public void Tick(float deltaTime)
     {
         elapsedTime += deltaTime;
-        definition.Effect.OnTick(context, deltaTime);
+        Definition.Effect.OnTick(context, deltaTime);
     }
 
     public void Complete()
     {
-        definition.Effect.OnComplete(context);
+        Definition.Effect.OnComplete(context);
     }
     
     public void Cancel()
     {
-        definition.Effect.OnCancel(context);
+        Definition.Effect.OnCancel(context);
     }
 }

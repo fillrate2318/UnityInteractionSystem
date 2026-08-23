@@ -12,10 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a317f43d5cd90f4980ed598281cc15c, type: 3}
   m_Name: ChangeColorInteraction
   m_EditorClassIdentifier: Assembly-CSharp::InteractionDefinition
-  identifier: 
+  identifier: Color
   description: 
   kind: 0
   duration: 0
-  priority: 0
-  allowedFactionPairs: []
-  effect: {fileID: 0}
+  priority: 10
+  allowedFactionPairs:
+  - initiatorFaction: {fileID: 11400000, guid: 2331a4b93d898624f8daf79cdeeb5f8f, type: 2}
+    targetFaction: {fileID: 11400000, guid: 8982c7d8cf78baf49acfce596848ddd7, type: 2}
+  effect: {fileID: 11400000, guid: 5c7be6be900bea74c9501c9a65a222cd, type: 2}
