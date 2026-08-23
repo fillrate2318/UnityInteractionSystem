@@ -25,4 +25,5 @@ public class InteractionDefinition : ScriptableObject
     [SerializeField] private int priority;
 
     [SerializeField] private FactionPair[] allowedFactionPairs;
+    [SerializeField] private Effect effect;
 }
