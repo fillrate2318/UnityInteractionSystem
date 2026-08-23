@@ -133,6 +133,7 @@ GameObject:
   - component: {fileID: 179128966}
   - component: {fileID: 179128965}
   - component: {fileID: 179128970}
+  - component: {fileID: 179128971}
   m_Layer: 0
   m_Name: Ally
   m_TagString: Untagged
@@ -156,8 +157,7 @@ MonoBehaviour:
   faction: {fileID: 11400000, guid: 2331a4b93d898624f8daf79cdeeb5f8f, type: 2}
   interactions:
   - {fileID: 11400000, guid: a225c2f5e37606f41be085c035240915, type: 2}
-  - {fileID: 11400000, guid: d57faaeed1100a24894f149f5a947270, type: 2}
-  updateInterval: 1
+  updateInterval: 4
 --- !u!65 &179128966
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -264,6 +264,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EntityVisual
   renderer: {fileID: 179128967}
+--- !u!114 &179128971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 179128964}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e499677ae69ad4842a5aa1c6fca7f3ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EntityStats
+  health: 50
+  maxHealth: 100
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -542,6 +556,8 @@ GameObject:
   - component: {fileID: 708204593}
   - component: {fileID: 708204592}
   - component: {fileID: 708204597}
+  - component: {fileID: 708204598}
+  - component: {fileID: 708204599}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -556,15 +572,16 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 708204591}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ffe75e763ab40d541b06ad27ab160d2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Entity
   displayName: Enemy
   faction: {fileID: 11400000, guid: 8982c7d8cf78baf49acfce596848ddd7, type: 2}
-  interactions: []
-  updateInterval: 1
+  interactions:
+  - {fileID: 11400000, guid: 6b26440b766320343a8e3a9ac8214d88, type: 2}
+  updateInterval: 2
 --- !u!65 &708204593
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -671,6 +688,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EntityVisual
   renderer: {fileID: 708204594}
+--- !u!114 &708204598
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 708204591}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e499677ae69ad4842a5aa1c6fca7f3ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EntityStats
+  health: 20
+  maxHealth: 100
+--- !u!114 &708204599
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 708204591}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e73501af1ebb4164aa23a481c91a1c88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EntityEnabler
+  delay: 5
+  target: {fileID: 708204592}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -734,6 +779,7 @@ GameObject:
   - component: {fileID: 893883318}
   - component: {fileID: 893883317}
   - component: {fileID: 893883322}
+  - component: {fileID: 893883323}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -755,8 +801,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Entity
   displayName: Player
   faction: {fileID: 11400000, guid: d983ad71c8e04e74aadf9d93fedf83fd, type: 2}
-  interactions: []
-  updateInterval: 1
+  interactions:
+  - {fileID: 11400000, guid: e88cfd37bd61b9849b12730a680c0b74, type: 2}
+  - {fileID: 11400000, guid: d57faaeed1100a24894f149f5a947270, type: 2}
+  updateInterval: 2
 --- !u!65 &893883318
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -863,6 +911,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EntityVisual
   renderer: {fileID: 893883319}
+--- !u!114 &893883323
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 893883316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e499677ae69ad4842a5aa1c6fca7f3ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EntityStats
+  health: 20
+  maxHealth: 100
 --- !u!1 &2004727667
 GameObject:
   m_ObjectHideFlags: 0
@@ -911,8 +973,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Entity
   displayName: Neutral
   faction: {fileID: 11400000, guid: 73ae8bc0507f1f14cb9361e0d5b8c7d4, type: 2}
-  interactions: []
-  updateInterval: 1
+  interactions:
+  - {fileID: 11400000, guid: e88cfd37bd61b9849b12730a680c0b74, type: 2}
+  updateInterval: 2
 --- !u!65 &2004727670
 BoxCollider:
   m_ObjectHideFlags: 0

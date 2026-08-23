@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3df8356c224e84d47a3b1d21f4c24d8b, type: 3}
   m_Name: InspectEffect
   m_EditorClassIdentifier: Assembly-CSharp::EmitLogEffect
-  debugColor: {r: 0.028301716, g: 0.9233613, b: 1, a: 0}
+  debugColor: {r: 0.028301716, g: 0.9233613, b: 1, a: 1}
   message: '{initiator} inspected {target}'

@@ -13,4 +13,10 @@ public class EntityStats : MonoBehaviour
         if (delta <= 0f) return;
         health = Mathf.Min(health + delta, maxHealth);
     }
+
+    public void ApplyDamage(float delta)
+    {
+        if (delta <= 0f) return;
+        health = Mathf.Max(health - delta, 0);
+    }
 }

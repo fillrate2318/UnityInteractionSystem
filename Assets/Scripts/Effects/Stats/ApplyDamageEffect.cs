@@ -1,9 +1,9 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "RestoreHealthEffect", menuName = "Scriptable Objects/RestoreHealthEffect")]
-public class RestoreHealthEffect : Effect
+[CreateAssetMenu(fileName = "ApplyDamageEffect", menuName = "Scriptable Objects/ApplyDamageEffect")]
+public class ApplyDamageEffect : Effect
 {
-    [SerializeField] private float healthAmount = 25f;
+    [SerializeField] private float damageAmount = 25f;
 
     public override void OnStart(InteractionContext context)
     {
@@ -21,12 +21,12 @@ public class RestoreHealthEffect : Effect
 
         float previousHealth = stats.Health;
 
-        stats.RestoreHealth(healthAmount);
+        stats.ApplyDamage(damageAmount);
 
-        float restoredAmount = stats.Health - previousHealth;
+        float actualDamage = previousHealth - stats.Health;
 
         Debug.Log(
-            $"{context.Initiator.DisplayName} restored {restoredAmount:0.##} health to " +
+            $"{context.Initiator.DisplayName} applied {actualDamage:0.##} damage to " +
             $"{context.Target.DisplayName}.", context.Target);
     }
 }

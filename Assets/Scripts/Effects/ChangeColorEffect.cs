@@ -9,8 +9,19 @@ public class ChangeColorEffect : Effect
     {
         EntityVisual visual = GetVisual(context);
         if (!visual) return;
+     
+        Color previousColor = visual.Color;
+        
+        if (previousColor == color)
+        {
+            return;
+        }
         
         visual.SetColor(color);
+        
+        Debug.Log($"{context.Initiator.DisplayName} changed {context.Target.DisplayName} color from " +
+                  $"#{ColorUtility.ToHtmlStringRGB(previousColor)} to #{ColorUtility.ToHtmlStringRGB(color)}.",
+            context.Target);
     }
 
     private EntityVisual GetVisual(InteractionContext context)

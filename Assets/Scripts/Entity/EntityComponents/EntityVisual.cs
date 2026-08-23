@@ -4,7 +4,7 @@ public class EntityVisual : MonoBehaviour
 {
     [SerializeField] private Renderer renderer;
 
-    public Color color => renderer.material.color;
+    public Color Color => renderer ? renderer.material.color : Color.white;
     
     public void SetColor(Color color)
     {

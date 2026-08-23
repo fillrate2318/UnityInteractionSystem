@@ -12,7 +12,6 @@ public class EmitLogEffect : Effect
             return;
         }
         
-        if (!context.Initiator || !context.Target) return;
         string formattedMessage = message.Replace("{initiator}", context.Initiator.DisplayName)
             .Replace("{target}", context.Target.DisplayName);
 

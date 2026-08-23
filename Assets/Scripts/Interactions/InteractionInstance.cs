@@ -4,6 +4,7 @@ public class InteractionInstance
 
     private float elapsedTime;
 
+    public InteractionContext Context => context;
     public InteractionDefinition Definition => context.Interaction;
     public int Priority => Definition.Priority;
 
