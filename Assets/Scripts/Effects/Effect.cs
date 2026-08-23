@@ -6,14 +6,14 @@ public abstract class Effect : ScriptableObject
     // Virtual methods are not abstract because not each child class need to implement all methods
     
     // Executes when effect is applied, before first update call
-    public virtual void OnStart() {}
+    public virtual void OnStart(InteractionContext context) {}
     
     // Executes each frame
-    public virtual void OnTick() {}
+    public virtual void OnTick(InteractionContext context) {}
     
     // Executes after effect is finished normally
-    public virtual void OnComplete() {}
+    public virtual void OnComplete(InteractionContext context) {}
     
     // Executes if effect was canceled by effect with higher priority
-    public virtual void OnCancel() {}
+    public virtual void OnCancel(InteractionContext context) {}
 }

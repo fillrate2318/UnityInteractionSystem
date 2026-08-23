@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Entity : MonoBehaviour
@@ -6,11 +7,14 @@ public class Entity : MonoBehaviour
     [SerializeField] private string displayName;
     [SerializeField] private FactionDefinition faction;
     [SerializeField] private InteractionDefinition[] interactions;
-    
     [SerializeField] private float updateInterval = 1;
+    
+    public string DisplayName => displayName; 
+    public FactionDefinition Faction => faction;
+    public IReadOnlyList<InteractionDefinition> Interactions => interactions;
 
     private InteractionController controller;
-    private float delta;
+    private float elapsedTime = 0;
     
     private void Awake()
     {
@@ -24,16 +28,22 @@ public class Entity : MonoBehaviour
 
     private void Update()
     {
-        delta += Time.deltaTime;
-        if (delta >= updateInterval)
-        {
-            delta = 0;
-            controller.EvaluateInteractions();
-        }
+        ControllerUpdate(Time.deltaTime);
     }
 
     private void OnDisable()
     {
         EntityRegistry.UnregisterEntity(this);
+    }
+
+    private void ControllerUpdate(float deltaTime)
+    {
+        controller.Tick(deltaTime);
+        elapsedTime += deltaTime;
+        if (elapsedTime >= updateInterval)
+        {
+            elapsedTime = 0;
+            controller.EvaluateInteractions();
+        }
     }
 }
