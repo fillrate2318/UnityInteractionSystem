@@ -580,7 +580,7 @@ MonoBehaviour:
   displayName: Enemy
   faction: {fileID: 11400000, guid: 8982c7d8cf78baf49acfce596848ddd7, type: 2}
   interactions:
-  - {fileID: 11400000, guid: 6b26440b766320343a8e3a9ac8214d88, type: 2}
+  - {fileID: 11400000, guid: 6d88aa5ee82bdd2418d83e0007ff0f05, type: 2}
   updateInterval: 2
 --- !u!65 &708204593
 BoxCollider:
@@ -975,7 +975,7 @@ MonoBehaviour:
   faction: {fileID: 11400000, guid: 73ae8bc0507f1f14cb9361e0d5b8c7d4, type: 2}
   interactions:
   - {fileID: 11400000, guid: e88cfd37bd61b9849b12730a680c0b74, type: 2}
-  updateInterval: 2
+  updateInterval: 3
 --- !u!65 &2004727670
 BoxCollider:
   m_ObjectHideFlags: 0
