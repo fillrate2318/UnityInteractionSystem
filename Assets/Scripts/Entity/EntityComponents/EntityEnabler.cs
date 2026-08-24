@@ -8,7 +8,10 @@ public class EntityEnabler : MonoBehaviour
     
     void OnEnable()
     {
-        if (!target) return;
+        if (!target)
+        {
+            return;
+        }
         StartCoroutine(DelayAction(delay));
     }
 

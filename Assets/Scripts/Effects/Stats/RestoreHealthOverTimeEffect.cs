@@ -7,16 +7,20 @@ public class RestoreHealthOverTimeEffect : Effect
     
     public override void OnStart(InteractionContext context)
     {
-        if (!context.Initiator || !context.Target) return;
+        if (!context.Initiator || !context.Target)
+        {
+            return;
+        }
         Debug.Log($"{context.Initiator.DisplayName} started healing " +
                   $"{context.Target.DisplayName}.");
     }
 
     public override void OnTick(InteractionContext context, float deltaTime)
     {
-        base.OnTick(context, deltaTime);
-
-        if (!context.Target) return;
+        if (!context.Target)
+        {
+            return;
+        }
         
         EntityStats stats = context.Target.GetComponent<EntityStats>();
 
@@ -32,13 +36,19 @@ public class RestoreHealthOverTimeEffect : Effect
 
     public override void OnComplete(InteractionContext context)
     {
-        if (!context.Target) return;
+        if (!context.Target)
+        {
+            return;
+        }
         Debug.Log($"Healing {context.Target.DisplayName} completed.");
     }
 
     public override void OnCancel(InteractionContext context)
     {
-        if (!context.Target) return;
+        if (!context.Target)
+        {
+            return;
+        }
         Debug.Log($"Healing {context.Target.DisplayName} cancelled.");
     }
 }

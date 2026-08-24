@@ -8,7 +8,10 @@ public class EntityVisual : MonoBehaviour
     
     public void SetColor(Color color)
     {
-        if (!renderer) return;
+        if (!renderer)
+        {
+            return;
+        }
         renderer.material.color = color;
     }
 }

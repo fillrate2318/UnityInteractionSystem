@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: PlayerFaction
   m_EditorClassIdentifier: Assembly-CSharp::FactionDefinition
   identifier: Player
-  description: 
+  description: Entities representing the player

@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: AllyFaction
   m_EditorClassIdentifier: Assembly-CSharp::FactionDefinition
   identifier: Ally
-  description: 
+  description: "Friendly non-player entities aligned with the player\u2019s faction"

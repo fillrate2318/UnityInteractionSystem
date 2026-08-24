@@ -27,18 +27,24 @@ public class InteractionController
     
     public void EvaluateInteractions()
     {
+        if (owner.Interactions == null)
+        {
+            return;
+        }
+        
         IReadOnlyList<Entity> entities = EntityRegistry.Entities;
         List<InteractionCandidate> candidates = new List<InteractionCandidate>();
         foreach (Entity entity in entities)
         {
-            if (entity == owner)
-            {
-                continue;
-            }
-
+            if (!entity) continue;
+            
+            if (entity == owner) continue;
+            
             foreach (InteractionDefinition interaction in owner.Interactions)
             {
                 if (!interaction) continue;
+
+                if (!interaction.Effect) continue;
                 
                 if (InteractionAvailability.IsFactionPairAllowed(interaction, 
                         owner.Faction, entity.Faction))
@@ -74,7 +80,7 @@ public class InteractionController
 
             CancelInteraction(interactionCandidate);
         }
-
+        
         currentInteraction = new InteractionInstance(new InteractionContext(owner, 
             interactionCandidate.Target, interactionCandidate.Interaction));
         
@@ -105,6 +111,11 @@ public class InteractionController
     private void LogRejectedInteraction(InteractionDefinition interaction, Entity target)
     {
         if (!loggedRejections.Add((interaction, target)))
+        {
+            return;
+        }
+
+        if (!owner.Faction || !target.Faction)
         {
             return;
         }

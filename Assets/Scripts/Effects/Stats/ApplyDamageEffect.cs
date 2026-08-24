@@ -7,7 +7,10 @@ public class ApplyDamageEffect : Effect
 
     public override void OnStart(InteractionContext context)
     {
-        if (!context.Initiator || !context.Target) return;
+        if (!context.Initiator || !context.Target)
+        {
+            return;
+        }
         
         EntityStats stats = context.Target.GetComponent<EntityStats>();
 

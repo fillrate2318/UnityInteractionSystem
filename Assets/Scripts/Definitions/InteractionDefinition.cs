@@ -51,6 +51,8 @@ public class InteractionDefinition : ScriptableObject
     [SerializeField] private FactionPair[] allowedFactionPairs;
     [SerializeField] private Effect effect;
 
+    [SerializeField] private Color debugColor;
+
     public string Identifier => identifier;
     public string Description => description;
     public InteractionKind Kind => kind;
@@ -58,6 +60,7 @@ public class InteractionDefinition : ScriptableObject
     public int Priority => priority;
     public IReadOnlyList<FactionPair> AllowedFactionPairs => allowedFactionPairs;
     public Effect Effect => effect;
+    public Color DebugColor => debugColor;
 
     private void OnValidate()
     {

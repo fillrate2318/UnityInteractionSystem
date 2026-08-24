@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: NeutralFaction
   m_EditorClassIdentifier: Assembly-CSharp::FactionDefinition
   identifier: Neutral
-  description: 
+  description: Unaffiliated entities with no inherent allegiance to the player, allies,
+    or enemies

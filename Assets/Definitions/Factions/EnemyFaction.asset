@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: EnemyFaction
   m_EditorClassIdentifier: Assembly-CSharp::FactionDefinition
   identifier: Enemy
-  description: 
+  description: Hostile entities opposed to the player and their allies

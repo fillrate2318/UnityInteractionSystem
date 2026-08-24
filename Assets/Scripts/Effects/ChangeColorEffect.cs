@@ -8,7 +8,10 @@ public class ChangeColorEffect : Effect
     public override void OnStart(InteractionContext context)
     {
         EntityVisual visual = GetVisual(context);
-        if (!visual) return;
+        if (!visual)
+        {
+            return;
+        }
      
         Color previousColor = visual.Color;
         
@@ -26,7 +29,10 @@ public class ChangeColorEffect : Effect
 
     private EntityVisual GetVisual(InteractionContext context)
     {
-        if (!context.Target) return null;
+        if (!context.Target)
+        {
+            return null;
+        }
         
         return context.Target.GetComponent<EntityVisual>();
     }
