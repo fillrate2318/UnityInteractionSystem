@@ -1,136 +1,91 @@
 # Unity Interaction System
 
-A data-driven interaction system implemented in Unity 6 using 
-ScriptableObject definitions, faction-based availability rules, priorities, 
-timed interactions, interruption, and reusable effects.
+A data-driven interaction system implemented in Unity 6 using ScriptableObject
+definitions, faction-based availability, priorities, timed execution,
+interruption, and reusable effects.
 
-## Engine version
-Unity 6.5 (6000.5.9f1)
+**Unity version:** `6000.5.9f1`
 
-## Interaction Selection
+## Running the Demo
 
-Every enabled Entity is registered in EntityRegistry.
+Open `Assets/Scenes/DemoScene.unity`, open the Console and enter Play Mode.
+The demo runs automatically.
 
-At its configured update interval, an entity:
+Player starts a timed healing interaction with Ally. Enemy becomes available
+after a delay, allowing the higher-priority `PaintEnemy` interaction to cancel
+the active healing. Enemy is marked red and applies damage. The Console also
+shows rejected faction pairs and log-based interactions.
 
-1. Evaluates its interaction definitions against all other registered entities.
-2. Rejects candidates whose initiator-target faction pair is not allowed.
-3. Sorts valid candidates by descending priority.
-4. Resolves equal priorities by interaction identifier and target display name.
+## Interaction Pipeline
+
+Every enabled `Entity` is registered in `EntityRegistry`. At its configured
+update interval, an entity:
+
+1. Evaluates its definitions against other registered entities.
+2. Rejects candidates whose directed faction pair is not allowed.
+3. Selects the candidate with the highest priority.
+4. Resolves ties by interaction identifier and target display name.
 5. Starts the selected interaction.
-6. Interrupts the current interaction only when the new candidate has a strictly higher priority.
+6. Interrupts the current interaction only if the new priority is strictly higher.
 
-Rejected faction pairs are logged once per interaction-target combination to avoid Console spam.
+Rejected faction pairs are logged once per interaction-target combination.
+
+Immediate interactions execute `OnStart` and `OnComplete` in the same
+evaluation. Timed interactions execute `OnStart`, `OnTick`, and either
+`OnComplete` or `OnCancel`.
 
 ## Effects
 
-Effects are reusable ScriptableObject assets implementing lifecycle callbacks:
+Effects are reusable ScriptableObject assets:
 
-- EmitLogEffect - emits a configurable message using {initiator} and
-    {target} placeholders.
-- ChangeColorEffect - changes the target's visual color.
-- RestoreHealthOverTimeEffect - gradually restores target health.
-- ApplyDamageEffect - immediately reduces target health.
+- `EmitLogEffect` emits a configurable message.
+- `ChangeColorEffect` changes the target's visual color.
+- `RestoreHealthOverTimeEffect` gradually restores health.
+- `ApplyDamageEffect` immediately reduces health.
 
-Runtime state is stored on scene components such as EntityStats, not inside effect ScriptableObjects.
+Mutable runtime state is stored on scene components such as `EntityStats`, not
+inside shared effect assets.
 
-## Adding a New Interaction Effect
+## Adding a New Effect
 
-To add a new effect:
+Add the effect class under `Assets/Scripts/Effects`, deriving it from `Effect`.
+Override only the required lifecycle callbacks: `OnStart`, `OnTick`,
+`OnComplete`, or `OnCancel`.
 
-1. Create a class derived from Effect.
-2. Override only the lifecycle methods required by the behavior:
-    - OnStart for immediate application or initialization;
-    - OnTick for behavior applied over time;
-    - OnComplete for normal completion;
-    - OnCancel for interruption cleanup.
-3. Add CreateAssetMenu to the class.
-4. Create and configure an effect asset.
-5. Create an InteractionDefinition asset.
-6. Assign the effect, interaction kind, duration, priority, and allowed faction pairs.
-7. Add the interaction definition to an Entity in the Inspector.
+Create its asset under `Assets/Definitions/Effect`, then create an
+`InteractionDefinition` under `Assets/Definitions/Interactions`. Configure its
+kind, duration, priority, allowed faction pairs and effect reference, then add
+the interaction to an Entity through the Inspector.
 
-Selection, faction filtering, priority handling, timing, completion, and interruption 
-are handled by the existing interaction pipeline.
+A new effect does not require changes to:
 
-A new effect may require a new target component when it introduces new mutable 
-state. For example, a mana effect would require an EntityMana component, but
-it would still not require changes to the interaction system itself.
+- `InteractionController`;
+- `InteractionSelector`;
+- `InteractionInstance`;
+- `InteractionAvailability`;
+- `InteractionPriorityPolicy`;
+- `EntityRegistry`.
 
-## Project Structure
-
-Assets/
-|-- Definitions/
-|   |-- Effect/
-|   |-- Factions/
-|   |-- Interactions/
-|-- Scenes/
-|   |-- DemoScene.unity
-|-- Scripts/
-    |-- Definitions/
-    |-- Effects/
-    |-- Entity/
-    |-- Interactions/
-
-Key classes:
-- Entity: owns a faction and available interaction definitions.
-- EntityRegistry: tracks enabled entities.
-- InteractionController: evaluates candidates and manages the current interaction.
-- InteractionSelector: performs deterministic priority-based selection.
-- InteractionInstance: owns runtime lifecycle state.
-- InteractionAvailability: validates faction pairs.
-- Effect: base class for reusable interaction effects.
-
-## Design Notes
-
-Interaction definitions and effects are separated from runtime state:
-
-- ScriptableObjects describe reusable configuration and behavior.
-- InteractionInstance stores per-execution state such as elapsed time.
-- Scene components store mutable entity state such as health and visual color.
-
-This allows new factions, interactions, and effects to be added without
-modifying the interaction controller.
+An effect may require a new scene component when it introduces new mutable
+state, but the interaction pipeline remains unchanged.
 
 ## Scope and Further Work
 
-The implementation focuses on the core interaction pipeline and an automated
-scene that demonstrates faction filtering, deterministic selection, immediate
-and timed execution, effect lifecycle, and priority-based interruption.
+Cut for time:
 
-The following items were cut for time:
-
-- reusable interaction conditions beyond faction-pair checks;
-- distance and spatial availability rules;
-- cooldowns and one-shot interactions;
-- automated Edit Mode and Play Mode tests;
-- runtime UI for health, active interactions, and priorities;
-- support for combining multiple effects in one interaction;
-- production-level diagnostics and configurable logging;
+- conditions beyond faction-pair checks;
+- distance, cooldown and one-shot rules;
+- multiple effects per interaction;
+- runtime UI and configurable diagnostics;
+- automated Edit Mode and Play Mode tests.
 
 With three additional days, I would prioritize:
 
-1. **Availability conditions**
-    Introduce reusable condition objects such as health thresholds, distance,
-    cooldown, required components, and runtime flags. This would prevent
-    interactions from becoming candidates when their effects cannot be applied.
-
-2. **Multiple effects per interaction**
-    Replace the single effect reference with an ordered collection so one
-    interaction could, for example, apply damage, change color, and emit a log
-    without requiring a combined effect class.
-
-3. **Improved runtime feedback**
-    Add health bars, active-interaction labels, priority display, and visible
-    cancellation feedback so the demo can be understood without relying on the
-    Console.
-
-4. **Editor validation**
-    Add clearer validation errors for incompatible configurations, missing
-    components, invalid durations, empty identifiers, and duplicated faction
-    pairs.
-
-5. **Lifecycle robustness**
-    Clamp the final timed tick to the remaining duration, cancel interactions
-    when an Entity is disabled, and add explicit cleanup for destroyed targets.
-
+1. Add tests for faction filtering, deterministic selection, completion and
+    interruption.
+2. Add reusable availability conditions for distance, health, cooldowns,
+    required components and runtime flags.
+3. Support ordered effect collections per interaction.
+4. Add health bars, active-interaction labels and visible cancellation feedback.
+5. Improve lifecycle robustness by clamping the final tick and cancelling
+    interactions when entities or targets are disabled.
