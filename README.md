@@ -32,15 +32,39 @@ also execute `OnTick` and finish through either `OnComplete` or `OnCancel`.
 
 ## Architecture
 
-- `Entity` owns a faction and a set of available interaction definitions.
-- `EntityRegistry` tracks enabled entities that can participate in interactions.
-- `InteractionController` discovers candidates and manages the active interaction.
-- `InteractionAvailability` validates directed faction-pair rules.
-- `InteractionSelector` selects the highest-priority candidate deterministically.
-- `InteractionInstance` stores per-execution state and drives the effect lifecycle.
-- `InteractionDefinition` stores interaction configuration as a ScriptableObject.
-- `Effect` defines reusable behavior executed through lifecycle callbacks.
-- `InteractionContext` provides the effect with the initiator, target and definition.
+- `Entity` is a `MonoBehaviour` configured in the Inspector. It registers
+    itself in `EntityRegistry` and creates one `InteractionController` in
+    `Awake`.
+
+- `EntityRegistry` is a static runtime registry of currently enabled entities.
+    Entities register through `OnEnable` and unregister through `OnDisable`.
+
+- `InteractionController` is a plain C# object owned by one `Entity`. It
+    discovers candidates and owns that entity's current `InteractionInstance`.
+
+- `InteractionDefinition` and `FactionDefinition` are ScriptableObjects created
+    as project assets. They contain reusable interaction and faction
+    configuration.
+
+- `InteractionInstance` is a plain runtime object created by
+    `InteractionController` whenever an interaction starts. It stores elapsed
+    time and drives the effect lifecycle.
+
+- `InteractionAvailability`, `InteractionSelector`, and
+    `InteractionPriorityPolicy` are stateless static services responsible for
+    faction filtering, deterministic candidate selection, and interruption
+    rules.
+
+- `Effect` is an abstract ScriptableObject. Concrete effect assets implement
+    lifecycle callbacks and are referenced by `InteractionDefinition`.
+
+- `InteractionContext` is an immutable value passed to effects. It contains the
+    initiator, target, and selected interaction definition.
+
+- `EntityStats` and `EntityVisual` are MonoBehaviour components that store
+    mutable per-entity state. Shared ScriptableObject assets do not store runtime
+    interaction state.
+
 
 ## Effects
 
