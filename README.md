@@ -18,21 +18,29 @@ shows rejected faction pairs and log-based interactions.
 
 ## Interaction Pipeline
 
-Every enabled `Entity` is registered in `EntityRegistry`. At its configured
-update interval, an entity:
+At its configured interval, each registered Entity evaluates its definitions
+against other entities. Candidates with disallowed directed faction pairs are
+rejected. Valid candidates are ordered by priority, interaction identifier and
+target name.
 
-1. Evaluates its definitions against other registered entities.
-2. Rejects candidates whose directed faction pair is not allowed.
-3. Selects the candidate with the highest priority.
-4. Resolves ties by interaction identifier and target display name.
-5. Starts the selected interaction.
-6. Interrupts the current interaction only if the new priority is strictly higher.
+A candidate interrupts the active interaction only when its priority is
+strictly higher. Rejected faction pairs are logged once per
+interaction-target combination.
 
-Rejected faction pairs are logged once per interaction-target combination.
+Immediate interactions execute `OnStart` and `OnComplete`. Timed interactions
+also execute `OnTick` and finish through either `OnComplete` or `OnCancel`.
 
-Immediate interactions execute `OnStart` and `OnComplete` in the same
-evaluation. Timed interactions execute `OnStart`, `OnTick`, and either
-`OnComplete` or `OnCancel`.
+## Architecture
+
+- `Entity` owns a faction and a set of available interaction definitions.
+- `EntityRegistry` tracks enabled entities that can participate in interactions.
+- `InteractionController` discovers candidates and manages the active interaction.
+- `InteractionAvailability` validates directed faction-pair rules.
+- `InteractionSelector` selects the highest-priority candidate deterministically.
+- `InteractionInstance` stores per-execution state and drives the effect lifecycle.
+- `InteractionDefinition` stores interaction configuration as a ScriptableObject.
+- `Effect` defines reusable behavior executed through lifecycle callbacks.
+- `InteractionContext` provides the effect with the initiator, target and definition.
 
 ## Effects
 
